@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using DirectShowLib;
 
-namespace AdvancedVideoPlayer
+namespace CVideo
 {
     public partial class VideoPlayerForm : Form
     {
