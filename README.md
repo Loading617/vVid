@@ -1,2 +1,2 @@
-# CVideo
+# UVideo
 Video Player for Windows
