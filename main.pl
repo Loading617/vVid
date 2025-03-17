@@ -7,7 +7,7 @@ use Storable;
 
 my $main = Win32::GUI::Window->new(
     -name   => "Main",
-    -title  => "EVideo",
+    -title  => "EVide",
     -width  => 800,
     -height => 600,
 );
