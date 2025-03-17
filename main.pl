@@ -3,6 +3,7 @@ use warnings;
 use Win32::GUI;
 use Win32::MediaPlayer;
 use Win32::GUI::FileDialog;
+use Storable;
 
 my $main = Win32::GUI::Window->new(
     -name   => "Main",
