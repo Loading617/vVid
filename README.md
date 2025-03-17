@@ -1,2 +1,2 @@
-# EVide
+# vVid
 Video Player for Windows
