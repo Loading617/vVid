@@ -17,7 +17,7 @@ class vVid : Application {
 
     protected override void activate() {
         window = new ApplicationWindow(this) {
-            title = "Vala Video Player",
+            title = "vVid",
             default_width = 900,
             default_height = 600
         };
