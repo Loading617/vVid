@@ -1,2 +1,2 @@
 # vVid
-Video Player for Windows
+Video Player written in C# for Windows
