@@ -1,21 +1,20 @@
 <Window x:Class="vVid.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="vVid" Height="450" Width="800">
-    <Grid>
-        <DockPanel>
-            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                <Button Name="btnOpen" Content="Open" Click="BtnOpen_Click" Margin="2"/>
-                <Button Name="btnPlay" Content="Play" Click="BtnPlay_Click" Margin="2"/>
-                <Button Name="btnPause" Content="Pause" Click="BtnPause_Click" Margin="2"/>
-                <Button Name="btnStop" Content="Stop" Click="BtnStop_Click" Margin="2"/>
-                <TextBlock Name="txtPosition" Margin="10,0"/>
-                <Slider Name="volumeSlider" Width="100" ValueChanged="VolumeSlider_ValueChanged" Minimum="0" Maximum="1" Value="0.5" Margin="10,0"/>
-            </StackPanel>
+        xmlns:vlc="clr-namespace:LibVLCSharp.WPF;assembly=LibVLCSharp.WPF"
+        Title="vVid" Height="600" Width="1000">
+    <DockPanel>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="5">
+            <Button Content="Open Video" Click="OpenVideo_Click" Margin="5"/>
+            <Button Content="Open Subtitle" Click="OpenSubtitle_Click" Margin="5"/>
+            <Button Content="Play" Click="Play_Click" Margin="5"/>
+            <Button Content="Pause" Click="Pause_Click" Margin="5"/>
+            <Button Content="Stop" Click="Stop_Click" Margin="5"/>
+            <Slider x:Name="volumeSlider" Width="100" Minimum="0" Maximum="100" ValueChanged="VolumeSlider_ValueChanged" Margin="10,0"/>
+        </StackPanel>
 
-            <MediaElement Name="mediaElement" LoadedBehavior="Manual" Stretch="Uniform" />
+        <vlc::VideoView x:Name="videoView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
 
-            <Slider Name="seekSlider" DockPanel.Dock="Bottom" Margin="5" PreviewMouseUp="SeekSlider_PreviewMouseUp"/>
-        </DockPanel>
-    </Grid>
+        <Slider x:Name="seekSlider" DockPanel.Dock="Bottom" Margin="5" PreviewMouseUp="SeekSlider_PreviewMouseUp"/>
+    </DockPanel>
 </Window>
