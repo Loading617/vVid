@@ -12,6 +12,8 @@ namespace vVid
         private LibVLC _libVLC;
         private MediaPlayer _mediaPlayer;
         private DispatcherTimer _timer;
+        private List<string> playlist = new();
+        private int currentIndex = -1;
 
         public MainWindow()
         {
@@ -43,12 +45,16 @@ namespace vVid
             var dialog = new OpenFileDialog
             {
                 Filter = "Video files|*.mp4;*.mkv;*.avi;*.mov|All files|*.*"
+                Multiselect = true
             };
             if (dialog.ShowDialog() == true)
             {
                 _mediaPlayer.Media = new Media(_libVLC, new Uri(dialog.FileName));
                 _mediaPlayer.Play();
                 _timer.Start();
+                playlist = dialog.FileNames.ToList();
+                currentIndex = 0;
+                PlayVideoAtIndex(currentIndex);
             }
         }
 
@@ -73,6 +79,34 @@ namespace vVid
             seekSlider.Value = 0;
         }
 
+        private void Next_Click(object sender, RoutedEventArgs e)
+        {
+            if (currentIndex + 1 < playlist.Count)
+            {
+                currentIndex++;
+                PlayVideoAtIndex(currentIndex);
+            }
+        }
+
+        private void Prev_Click(object sender, RoutedEventArgs e)
+        {
+            if (currentIndex - 1 >= 0)
+            {
+                currentIndex--;
+                PlayVideoAtIndex(currentIndex);
+            }
+        }
+
+        private void PlayVideoAtIndex(int index)
+        {
+            if (index >= 0 && index < playlist.Count)
+            {
+                _mediaPlayer.Media = new Media(_libVLC, new Uri(playlist[index]));
+                _mediaPlayer.Play();
+                _timer.Start();
+            }
+        }
+
         private void MediaPlayer_LengthChanged(object sender, MediaPlayerLengthChangedEventArgs e)
         {
             Dispatcher.Invoke(() => seekSlider.Maximum = e.Length);
@@ -94,6 +128,28 @@ namespace vVid
         private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             _mediaPlayer.Volume = (int)e.NewValue;
+        }
+
+        private void Window_DragOver(object sender, DragEventArgs e)
+        {
+            e.Effects = e.Data.GetDataPresent(DataFormats.FileDrop) ? DragDropEffects.Copy : DragDropEffects.None;
+            e.Handled = true;
+        }
+
+        private void Window_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                var videoFiles = files.Where(f => f.EndsWith(".mp4") || f.EndsWith(".mkv") || f.EndsWith(".avi") || f.EndsWith(".mov")).ToList();
+
+                if (videoFiles.Any())
+                {
+                    playlist = videoFiles;
+                    currentIndex = 0;
+                    PlayVideoAtIndex(currentIndex);
+                }
+            }
         }
 
         protected override void OnClosed(EventArgs e)
